@@ -37,6 +37,10 @@ public class EmployeeController {
     public Employee updateEmployee(@PathVariable("id") Integer id, @RequestBody Employee newEmployee) {
         return employeeRepo.findById(id).map(employee -> {
             employee.setName(newEmployee.getName());
+            employee.setDepartment(newEmployee.getDepartment());
+            employee.setPosition(newEmployee.getPosition());
+            employee.setHireDate(newEmployee.getHireDate());
+            employee.setFireDate(newEmployee.getFireDate());
             return employeeRepo.save(employee);
         }).orElseGet(() -> {
             newEmployee.setId(id);
