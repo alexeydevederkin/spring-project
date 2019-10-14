@@ -1,13 +1,14 @@
 package com.asd.aggregateddata.service;
 
 import com.asd.aggregateddata.client.RestClient;
+import com.asd.aggregateddata.dto.AverageWorkingTime;
 import com.asd.aggregateddata.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Locale;
 
 
 @Service
@@ -20,7 +21,7 @@ public class AverageTimeService {
         this.restClient = restClient;
     }
 
-    public String getAverageTime() {
+    public AverageWorkingTime getAverageTime() {
         List<Employee> employees = restClient.getEmployees();
 
         long sumDays = 0;
@@ -38,6 +39,6 @@ public class AverageTimeService {
 
         double averageDays = (double) sumDays / numberOfEmployees;
 
-        return String.format(Locale.US, "Average working time in days: %.2f", averageDays);
+        return new AverageWorkingTime(averageDays);
     }
 }

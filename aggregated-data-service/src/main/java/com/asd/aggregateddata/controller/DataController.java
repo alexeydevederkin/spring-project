@@ -1,5 +1,6 @@
 package com.asd.aggregateddata.controller;
 
+import com.asd.aggregateddata.dto.AverageWorkingTime;
 import com.asd.aggregateddata.service.AverageTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ public class DataController {
     }
 
     @GetMapping
-    public String getAverageTime() {
+    public AverageWorkingTime getAverageTime() {
         return averageTimeService.getAverageTime();
     }
 }
