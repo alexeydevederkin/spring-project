@@ -30,11 +30,18 @@ public class EmployeeController {
 
     @PostMapping
     public Employee createEmployee(@RequestBody Employee employee) {
+        if (employee.getHireDate().compareTo(employee.getFireDate()) > 0) {
+            return null;
+        }
         return employeeRepo.save(employee);
     }
 
     @PutMapping("{id}")
     public Employee updateEmployee(@PathVariable("id") Integer id, @RequestBody Employee newEmployee) {
+        if (newEmployee.getHireDate().compareTo(newEmployee.getFireDate()) > 0) {
+            return null;
+        }
+
         return employeeRepo.findById(id).map(employee -> {
             employee.setName(newEmployee.getName());
             employee.setDepartment(newEmployee.getDepartment());

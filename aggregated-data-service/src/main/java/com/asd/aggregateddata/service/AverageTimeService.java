@@ -24,12 +24,19 @@ public class AverageTimeService {
         List<Employee> employees = restClient.getEmployees();
 
         long sumDays = 0;
+        long numberOfEmployees = 0;
 
         for (Employee employee : employees) {
-            sumDays += ChronoUnit.DAYS.between(employee.getHireDate(), employee.getFireDate());
+            long days = ChronoUnit.DAYS.between(employee.getHireDate(), employee.getFireDate());
+
+            // ignoring incorrect case with hireDate > fireData, if it happens (it shouldn't)
+            if (days >= 0) {
+                sumDays += days;
+                numberOfEmployees++;
+            }
         }
 
-        double averageDays = (double) sumDays / employees.size();
+        double averageDays = (double) sumDays / numberOfEmployees;
 
         return String.format(Locale.US, "Average working time in days: %.2f", averageDays);
     }
