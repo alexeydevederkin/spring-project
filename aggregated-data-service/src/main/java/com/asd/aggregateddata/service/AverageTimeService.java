@@ -37,7 +37,12 @@ public class AverageTimeService {
             }
         }
 
-        double averageDays = (double) sumDays / numberOfEmployees;
+        double averageDays = 0;
+
+        // if there are no employees, then average working days = 0
+        if (numberOfEmployees > 0) {
+            averageDays = (double) sumDays / numberOfEmployees;
+        }
 
         return new AverageWorkingTime(averageDays);
     }
