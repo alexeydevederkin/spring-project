@@ -1,5 +1,6 @@
 package com.asd.employee.service;
 
+import com.asd.employee.exception.EmployeeNotFoundException;
 import com.asd.employee.model.Employee;
 import com.asd.employee.repo.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class EmployeeService {
     }
 
     public Employee getOneEmployee(Integer id) {
-        return employeeRepo.findById(id).orElse(null);
+        return employeeRepo.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
     public Employee createEmployee(Employee newEmployee) {

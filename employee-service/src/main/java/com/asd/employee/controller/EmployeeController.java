@@ -1,5 +1,6 @@
 package com.asd.employee.controller;
 
+import com.asd.employee.exception.EmployeeNotFoundException;
 import com.asd.employee.model.Employee;
 import com.asd.employee.repo.EmployeeRepo;
 import com.asd.employee.service.EmployeeService;
