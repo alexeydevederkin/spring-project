@@ -18,7 +18,7 @@ public class DataController {
         this.averageTimeService = averageTimeService;
     }
 
-    @GetMapping
+    @GetMapping("/average-working-time")
     public AverageWorkingTime getAverageTime() {
         return averageTimeService.getAverageTime();
     }

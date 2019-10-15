@@ -8,7 +8,7 @@ The first microservice stores employee data (name, position, department, hire da
 2. Run ```employee-service``` project (set ```dbPassword``` in environment variables or in ```application.yml``` before running).
 3. Run ```aggregated-data-service``` project.
 
-Access aggregated data from the second microservice via ```http://localhost:8002/data/```.
+Access aggregated data from the second microservice via ```http://localhost:8002/data/average-working-time```.
   Supported requests: ```GET```.
 
 Access employee data from the first microservice via ```http://localhost:8001/employee/{id}```.
