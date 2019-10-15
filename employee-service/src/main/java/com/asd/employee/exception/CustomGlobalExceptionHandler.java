@@ -20,7 +20,10 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         response.sendError(HttpStatus.NOT_FOUND.value());
     }*/
 
-    @ExceptionHandler(EmployeeNotFoundException.class)
+    @ExceptionHandler({
+                    EmployeeNotFoundException.class,
+                    DepartmentNotFoundException.class,
+                    PositionNotFoundException.class})
     public ResponseEntity<CustomErrorResponse> customHandleNotFound(Exception ex, WebRequest request) {
 
         CustomErrorResponse errors = new CustomErrorResponse();

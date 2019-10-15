@@ -1,5 +1,6 @@
 package com.asd.employee.controller;
 
+import com.asd.employee.exception.DepartmentNotFoundException;
 import com.asd.employee.model.Department;
 import com.asd.employee.repo.DepartmentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class DepartmentController {
     }
 
     @GetMapping("{id}")
-    public Department getOneDepartment(@PathVariable("id") Department department) {
-        return department;
+    public Department getOneDepartment(@PathVariable("id") Integer id) {
+        return departmentRepo.findById(id).orElseThrow(() -> new DepartmentNotFoundException(id));
     }
 
     @PostMapping

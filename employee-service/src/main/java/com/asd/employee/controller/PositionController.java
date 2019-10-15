@@ -1,5 +1,7 @@
 package com.asd.employee.controller;
 
+import com.asd.employee.exception.DepartmentNotFoundException;
+import com.asd.employee.exception.PositionNotFoundException;
 import com.asd.employee.model.Position;
 import com.asd.employee.repo.PositionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +25,8 @@ public class PositionController {
     }
 
     @GetMapping("{id}")
-    public Position getOnePosition(@PathVariable("id") Position position) {
-        return position;
+    public Position getOnePosition(@PathVariable("id") Integer id) {
+        return positionRepo.findById(id).orElseThrow(() -> new PositionNotFoundException(id));
     }
 
     @PostMapping
