@@ -38,10 +38,7 @@ public class DepartmentController {
         return departmentRepo.findById(id).map(department -> {
             department.setName(newDepartment.getName());
             return departmentRepo.save(department);
-        }).orElseGet(() -> {
-            newDepartment.setId(id);
-            return departmentRepo.save(newDepartment);
-        });
+        }).orElseThrow(() -> new DepartmentNotFoundException(id));
     }
 
     @DeleteMapping("{id}")

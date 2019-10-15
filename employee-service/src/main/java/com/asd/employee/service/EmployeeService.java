@@ -61,10 +61,7 @@ public class EmployeeService {
             employee.setHireDate(newEmployee.getHireDate());
             employee.setFireDate(newEmployee.getFireDate());
             return employeeRepo.save(employee);
-        }).orElseGet(() -> {
-            newEmployee.setId(id);
-            return employeeRepo.save(newEmployee);
-        });
+        }).orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
     public void deleteEmployee(Integer id) {

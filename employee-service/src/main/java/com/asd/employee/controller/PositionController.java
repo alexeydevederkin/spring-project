@@ -39,10 +39,7 @@ public class PositionController {
         return positionRepo.findById(id).map(position -> {
             position.setName(newPosition.getName());
             return positionRepo.save(position);
-        }).orElseGet(() -> {
-            newPosition.setId(id);
-            return positionRepo.save(newPosition);
-        });
+        }).orElseThrow(() -> new PositionNotFoundException(id));
     }
 
     @DeleteMapping("{id}")
