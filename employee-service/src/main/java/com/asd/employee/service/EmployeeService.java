@@ -2,6 +2,7 @@ package com.asd.employee.service;
 
 import com.asd.employee.exception.DepartmentNotFoundException;
 import com.asd.employee.exception.EmployeeNotFoundException;
+import com.asd.employee.exception.IncorrectHireFireDateException;
 import com.asd.employee.exception.PositionNotFoundException;
 import com.asd.employee.model.Employee;
 import com.asd.employee.repo.DepartmentRepo;
@@ -25,6 +26,18 @@ public class EmployeeService {
         this.positionRepo = positionRepo;
     }
 
+    private void checkEmployeeCorrectness(Employee employee) {
+        int departmentId = employee.getDepartment().getId();
+        departmentRepo.findById(departmentId).orElseThrow(() -> new DepartmentNotFoundException(departmentId));
+
+        int positionId = employee.getPosition().getId();
+        positionRepo.findById(positionId).orElseThrow(() -> new PositionNotFoundException(positionId));
+
+        if (employee.getHireDate().compareTo(employee.getFireDate()) > 0) {
+            throw new IncorrectHireFireDateException();
+        }
+    }
+
     public List<Employee> getAllEmployees() {
         return employeeRepo.findAll();
     }
@@ -34,29 +47,12 @@ public class EmployeeService {
     }
 
     public Employee createEmployee(Employee newEmployee) {
-        int departmentId = newEmployee.getDepartment().getId();
-        departmentRepo.findById(departmentId).orElseThrow(() -> new DepartmentNotFoundException(departmentId));
-
-        int positionId = newEmployee.getPosition().getId();
-        positionRepo.findById(positionId).orElseThrow(() -> new PositionNotFoundException(positionId));
-
-        if (newEmployee.getHireDate().compareTo(newEmployee.getFireDate()) > 0) {
-            return null;
-        }
-
+        checkEmployeeCorrectness(newEmployee);
         return employeeRepo.save(newEmployee);
     }
 
     public Employee updateEmployee(Integer id, Employee newEmployee) {
-        int departmentId = newEmployee.getDepartment().getId();
-        departmentRepo.findById(departmentId).orElseThrow(() -> new DepartmentNotFoundException(departmentId));
-
-        int positionId = newEmployee.getPosition().getId();
-        positionRepo.findById(positionId).orElseThrow(() -> new PositionNotFoundException(positionId));
-
-        if (newEmployee.getHireDate().compareTo(newEmployee.getFireDate()) > 0) {
-            return null;
-        }
+        checkEmployeeCorrectness(newEmployee);
 
         return employeeRepo.findById(id).map(employee -> {
             employee.setName(newEmployee.getName());

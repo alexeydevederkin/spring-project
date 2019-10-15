@@ -8,17 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.time.LocalDateTime;
-
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
-    /*@ExceptionHandler(EmployeeNotFoundException.class)
-    public void springHandleNotFound(HttpServletResponse response) throws IOException {
-        response.sendError(HttpStatus.NOT_FOUND.value());
-    }*/
 
     @ExceptionHandler({
                     EmployeeNotFoundException.class,
@@ -31,5 +22,15 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         errors.setStatus(HttpStatus.NOT_FOUND.value());
 
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(IncorrectHireFireDateException.class)
+    public ResponseEntity<CustomErrorResponse> customHandleBadRequest(Exception ex, WebRequest request) {
+
+        CustomErrorResponse errors = new CustomErrorResponse();
+        errors.setError(ex.getMessage());
+        errors.setStatus(HttpStatus.BAD_REQUEST.value());
+
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }
