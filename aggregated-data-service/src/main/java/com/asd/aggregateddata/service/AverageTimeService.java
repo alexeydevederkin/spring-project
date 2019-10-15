@@ -30,7 +30,7 @@ public class AverageTimeService {
         for (Employee employee : employees) {
             long days = ChronoUnit.DAYS.between(employee.getHireDate(), employee.getFireDate());
 
-            // ignoring incorrect case with hireDate > fireData, if it happens (it shouldn't)
+            // ignoring incorrect case with hireDate > fireDate, if it happens (it shouldn't)
             if (days >= 0) {
                 sumDays += days;
                 numberOfEmployees++;
