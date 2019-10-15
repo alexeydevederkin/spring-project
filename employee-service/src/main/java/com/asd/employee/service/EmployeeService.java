@@ -27,15 +27,15 @@ public class EmployeeService {
     }
 
     private void checkEmployeeCorrectness(Employee employee) {
+        if (employee.getHireDate().compareTo(employee.getFireDate()) > 0) {
+            throw new IncorrectHireFireDateException();
+        }
+
         int departmentId = employee.getDepartment().getId();
         departmentRepo.findById(departmentId).orElseThrow(() -> new DepartmentNotFoundException(departmentId));
 
         int positionId = employee.getPosition().getId();
         positionRepo.findById(positionId).orElseThrow(() -> new PositionNotFoundException(positionId));
-
-        if (employee.getHireDate().compareTo(employee.getFireDate()) > 0) {
-            throw new IncorrectHireFireDateException();
-        }
     }
 
     public List<Employee> getAllEmployees() {
