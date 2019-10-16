@@ -4,13 +4,16 @@ import com.asd.employee.exception.DepartmentNotFoundException;
 import com.asd.employee.exception.EmployeeNotFoundException;
 import com.asd.employee.exception.IncorrectHireFireDateException;
 import com.asd.employee.exception.PositionNotFoundException;
+import com.asd.employee.model.Department;
 import com.asd.employee.model.Employee;
+import com.asd.employee.model.Position;
 import com.asd.employee.repo.DepartmentRepo;
 import com.asd.employee.repo.EmployeeRepo;
 import com.asd.employee.repo.PositionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -26,16 +29,29 @@ public class EmployeeService {
         this.positionRepo = positionRepo;
     }
 
-    private void checkEmployeeCorrectness(Employee employee) {
-        if (employee.getHireDate().compareTo(employee.getFireDate()) > 0) {
+    void checkEmployeeCorrectness(Employee employee) {
+        LocalDate hireDate = employee.getHireDate();
+        LocalDate fireDate = employee.getFireDate();
+        Department department = employee.getDepartment();
+        Position position = employee.getPosition();
+
+        if (hireDate == null || fireDate == null || employee.getHireDate().compareTo(employee.getFireDate()) > 0) {
             throw new IncorrectHireFireDateException();
         }
 
-        int departmentId = employee.getDepartment().getId();
-        departmentRepo.findById(departmentId).orElseThrow(() -> new DepartmentNotFoundException(departmentId));
+        if (department == null) {
+            throw new DepartmentNotFoundException(0);
+        } else {
+            int departmentId = department.getId();
+            departmentRepo.findById(departmentId).orElseThrow(() -> new DepartmentNotFoundException(departmentId));
+        }
 
-        int positionId = employee.getPosition().getId();
-        positionRepo.findById(positionId).orElseThrow(() -> new PositionNotFoundException(positionId));
+        if (position == null) {
+            throw new PositionNotFoundException(0);
+        } else {
+            int positionId = position.getId();
+            positionRepo.findById(positionId).orElseThrow(() -> new PositionNotFoundException(positionId));
+        }
     }
 
     public List<Employee> getAllEmployees() {

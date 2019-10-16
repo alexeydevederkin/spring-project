@@ -27,8 +27,10 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String name, LocalDate hireDate, LocalDate fireDate) {
+    public Employee(String name, Position position, Department department, LocalDate hireDate, LocalDate fireDate) {
         this.name = name;
+        this.position = position;
+        this.department = department;
         this.hireDate = hireDate;
         this.fireDate = fireDate;
     }
