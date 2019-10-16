@@ -39,15 +39,21 @@ class EmployeeServiceTest {
     @Autowired
     private EmployeeService employeeService;
 
+    private boolean initialized = false;
+
     @BeforeEach
     void setUp() {
-        Department department = new Department("Department 1");
-        department.setId(1);
-        Mockito.when(departmentRepo.findById(1)).thenReturn(Optional.of(department));
+        if (!initialized) {
+            Department department = new Department("Department 1");
+            department.setId(1);
+            Mockito.when(departmentRepo.findById(1)).thenReturn(Optional.of(department));
 
-        Position position = new Position("Manager");
-        position.setId(1);
-        Mockito.when(positionRepo.findById(1)).thenReturn(Optional.of(position));
+            Position position = new Position("Manager");
+            position.setId(1);
+            Mockito.when(positionRepo.findById(1)).thenReturn(Optional.of(position));
+
+            initialized = true;
+        }
     }
 
     @Test
