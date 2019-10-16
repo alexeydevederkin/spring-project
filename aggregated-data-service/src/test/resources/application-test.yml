@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: test-data-service
+
+server:
+  port: 8002
+  error:
+    include-stacktrace: never
