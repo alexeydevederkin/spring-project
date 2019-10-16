@@ -3,10 +3,10 @@ package com.asd.aggregateddata.service;
 import com.asd.aggregateddata.client.RestClient;
 import com.asd.aggregateddata.dto.AverageWorkingTime;
 import com.asd.aggregateddata.model.Employee;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -15,12 +15,15 @@ import java.util.List;
 public class AverageTimeService {
 
     RestClient restClient;
+    AverageWorkingTime cachedResponse;
 
     @Autowired
     public AverageTimeService(RestClient restClient) {
         this.restClient = restClient;
+        this.cachedResponse = new AverageWorkingTime(0);
     }
 
+    @HystrixCommand(fallbackMethod = "reliable")
     public AverageWorkingTime getAverageTime() {
         List<Employee> employees = restClient.getEmployees();
 
@@ -44,6 +47,12 @@ public class AverageTimeService {
             averageDays = (double) sumDays / numberOfEmployees;
         }
 
-        return new AverageWorkingTime(averageDays);
+        cachedResponse = new AverageWorkingTime(averageDays);
+
+        return cachedResponse;
+    }
+
+    public AverageWorkingTime reliable() {
+        return cachedResponse;
     }
 }
